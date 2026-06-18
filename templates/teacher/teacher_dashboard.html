@@ -1,0 +1,648 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="teacher-page">
+    <div class="container">
+        <div class="teacher-header">
+            <div>
+                <span class="section-badge">
+                    <i data-lucide="layout-dashboard" style="width:14px;height:14px;"></i> Teacher
+                </span>
+                <h1>Exam Dashboard</h1>
+                <p>Create exams, manage questions, and track analytics.</p>
+            </div>
+        </div>
+
+        <!-- ── Real-Time Analytics Summary Cards ── -->
+        <section class="analytics-summary">
+            <div class="stat-cards-row">
+                <div class="mini-stat-card">
+                    <div class="mini-stat-icon" style="background:rgba(99,102,241,0.1);color:#6366f1;">
+                        <i data-lucide="file-text" style="width:22px;height:22px;"></i>
+                    </div>
+                    <div>
+                        <div class="mini-stat-num">{{ total_exams }}</div>
+                        <div class="mini-stat-label">Total Exams</div>
+                    </div>
+                </div>
+                <div class="mini-stat-card">
+                    <div class="mini-stat-icon" style="background:rgba(16,185,129,0.1);color:#10b981;">
+                        <i data-lucide="users" style="width:22px;height:22px;"></i>
+                    </div>
+                    <div>
+                        <div class="mini-stat-num">{{ total_students }}</div>
+                        <div class="mini-stat-label">Students</div>
+                    </div>
+                </div>
+                <div class="mini-stat-card">
+                    <div class="mini-stat-icon" style="background:rgba(236,72,153,0.1);color:#ec4899;">
+                        <i data-lucide="database" style="width:22px;height:22px;"></i>
+                    </div>
+                    <div>
+                        <div class="mini-stat-num">{{ total_questions }}</div>
+                        <div class="mini-stat-label">Questions</div>
+                    </div>
+                </div>
+                <div class="mini-stat-card">
+                    <div class="mini-stat-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b;">
+                        <i data-lucide="trending-up" style="width:22px;height:22px;"></i>
+                    </div>
+                    <div>
+                        <div class="mini-stat-num">{{ avg_pass_rate }}%</div>
+                        <div class="mini-stat-label">Pass Rate</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Create Exam (with all 6 feature toggles) ── -->
+        <section class="teacher-panel">
+            <h2>
+                <i data-lucide="plus-circle" style="width:20px;height:20px;color:var(--primary);"></i>
+                Create Exam
+            </h2>
+            <form class="teacher-form" action="{% url 'create_exam' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="exam-name">Exam Name</label>
+                        <input id="exam-name" type="text" name="name" placeholder="Mid Term Science" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category">
+                            <option value="">Create new category below</option>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="category-name">New Category</label>
+                        <input id="category-name" type="text" name="category_name" placeholder="Science">
+                    </div>
+                    <div class="form-group">
+                        <label for="time-limit">Time Limit (minutes)</label>
+                        <input id="time-limit" type="number" name="time_limit_minutes" placeholder="0 = no limit"
+                            min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="max-questions">Max Questions Shown</label>
+                        <input id="max-questions" type="number" name="max_questions" placeholder="0 = all" min="0"
+                            value="0">
+                    </div>
+                </div>
+
+                <!-- Feature Toggles -->
+                <div class="feature-toggles">
+                    <h3>
+                        <i data-lucide="settings" style="width:16px;height:16px;color:var(--primary);"></i>
+                        Feature Settings
+                    </h3>
+                    <div class="toggle-grid">
+                        <label class="toggle-item">
+                            <input type="checkbox" name="proctoring_enabled">
+                            <span class="toggle-label-text">
+                                <i data-lucide="eye" style="width:16px;height:16px;"></i>
+                                AI Proctoring
+                            </span>
+                            <span class="toggle-desc">Tab-switch & behavior monitoring</span>
+                        </label>
+                        <label class="toggle-item">
+                            <input type="checkbox" name="browser_lockdown">
+                            <span class="toggle-label-text">
+                                <i data-lucide="shield-check" style="width:16px;height:16px;"></i>
+                                Browser Lockdown
+                            </span>
+                            <span class="toggle-desc">Fullscreen & copy/paste block</span>
+                        </label>
+                        <label class="toggle-item">
+                            <input type="checkbox" name="shuffle_questions" checked>
+                            <span class="toggle-label-text">
+                                <i data-lucide="shuffle" style="width:16px;height:16px;"></i>
+                                Shuffle Questions
+                            </span>
+                            <span class="toggle-desc">Randomize question order</span>
+                        </label>
+                    </div>
+
+                    <!-- LMS Integration -->
+                    <div class="form-grid" style="margin-top:12px;">
+                        <div class="form-group">
+                            <label for="lms-platform">
+                                <i data-lucide="plug" style="width:14px;height:14px;"></i>
+                                LMS Platform
+                            </label>
+                            <select id="lms-platform" name="lms_platform">
+                                <option value="none">None</option>
+                                <option value="moodle">Moodle</option>
+                                <option value="canvas">Canvas</option>
+                                <option value="blackboard">Blackboard</option>
+                                <option value="google_classroom">Google Classroom</option>
+                                <option value="teams">Microsoft Teams</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="lms-course-id">LMS Course ID</label>
+                            <input id="lms-course-id" type="text" name="lms_course_id" placeholder="Optional">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i data-lucide="plus" style="width:18px;height:18px;"></i>
+                    Create Exam Key
+                </button>
+            </form>
+        </section>
+
+        <!-- ── Exam List ── -->
+        <section class="teacher-exams">
+            {% for exam in exams %}
+            <article class="exam-manager">
+                <div class="exam-manager-head">
+                    <div>
+                        <h2>{{ exam.name }}</h2>
+                        <p>{{ exam.category.name }} · {{ exam.questions.count }} questions · {{ exam.total_marks }}
+                            marks</p>
+                        <!-- Feature badges -->
+                        <div class="feature-badges">
+                            {% if exam.proctoring_enabled %}
+                            <span class="fbadge fbadge-purple"><i data-lucide="eye" style="width:12px;height:12px;"></i>
+                                Proctoring</span>
+                            {% endif %}
+                            {% if exam.browser_lockdown %}
+                            <span class="fbadge fbadge-red"><i data-lucide="shield-check"
+                                    style="width:12px;height:12px;"></i> Lockdown</span>
+                            {% endif %}
+                            {% if exam.time_limit_minutes > 0 %}
+                            <span class="fbadge fbadge-amber"><i data-lucide="clock"
+                                    style="width:12px;height:12px;"></i> {{ exam.time_limit_minutes }}min</span>
+                            {% endif %}
+                            {% if exam.lms_platform != 'none' %}
+                            <span class="fbadge fbadge-blue"><i data-lucide="plug" style="width:12px;height:12px;"></i>
+                                {{ exam.get_lms_platform_display }}</span>
+                            {% endif %}
+                            {% if exam.shuffle_questions %}
+                            <span class="fbadge fbadge-green"><i data-lucide="shuffle"
+                                    style="width:12px;height:12px;"></i> Shuffle</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="exam-key-box">
+                        <span>Exam Key</span>
+                        <strong>{{ exam.exam_key }}</strong>
+                    </div>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="exam-actions-row">
+                    <a href="{% url 'edit_exam' exam.uid %}" class="btn btn-outline btn-sm">
+                        <i data-lucide="edit-3" style="width:14px;height:14px;"></i> Edit Exam
+                    </a>
+                    <a href="{% url 'analytics_dashboard' exam.uid %}" class="btn btn-outline btn-sm">
+                        <i data-lucide="bar-chart-3" style="width:14px;height:14px;"></i> Analytics
+                    </a>
+                    <a href="{% url 'export_results_csv' exam.uid %}" class="btn btn-outline btn-sm">
+                        <i data-lucide="download" style="width:14px;height:14px;"></i> Export CSV
+                    </a>
+                    {% if exam.lms_platform != 'none' %}
+                    <a href="{% url 'lms_grade_sync' exam.uid %}" target="_blank" class="btn btn-outline btn-sm">
+                        <i data-lucide="plug" style="width:14px;height:14px;"></i> LMS API
+                    </a>
+                    {% endif %}
+                </div>
+
+                <!-- Add Question Form (Smart Question Bank) -->
+                <form class="question-form" action="{% url 'add_question' exam.uid %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Question</label>
+                        <textarea name="question" rows="3" placeholder="Type question here" required></textarea>
+                    </div>
+                    <div class="form-grid compact">
+                        <div class="form-group">
+                            <label>Marks</label>
+                            <input type="number" name="marks" value="1" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Correct Option</label>
+                            <select name="correct_answer" required>
+                                <option value="1">Option 1</option>
+                                <option value="2">Option 2</option>
+                                <option value="3">Option 3</option>
+                                <option value="4">Option 4</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Difficulty</label>
+                            <select name="difficulty">
+                                <option value="easy">Easy</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tags</label>
+                            <input type="text" name="tags" placeholder="django, orm, basics">
+                        </div>
+                    </div>
+                    <div class="form-grid two">
+                        <div class="form-group"><label>Option 1</label><input type="text" name="answer_1" required>
+                        </div>
+                        <div class="form-group"><label>Option 2</label><input type="text" name="answer_2" required>
+                        </div>
+                        <div class="form-group"><label>Option 3</label><input type="text" name="answer_3"></div>
+                        <div class="form-group"><label>Option 4</label><input type="text" name="answer_4"></div>
+                    </div>
+                    <button type="submit" class="btn btn-outline">
+                        <i data-lucide="plus-circle" style="width:18px;height:18px;"></i>
+                        Add Question
+                    </button>
+                </form>
+
+                <!-- Question Bank List -->
+                {% if exam.questions.all %}
+                <div class="question-bank-section">
+                    <h3>
+                        <i data-lucide="database" style="width:18px;height:18px;color:#ec4899;"></i>
+                        Question Bank ({{ exam.questions.count }})
+                    </h3>
+                    <div class="question-bank-list">
+                        {% for q in exam.questions.all %}
+                        <div class="qb-item">
+                            <div class="qb-text">
+                                <strong>Q{{ forloop.counter }}.</strong> {{ q.question|truncatewords:20 }}
+                            </div>
+                            <div class="qb-meta">
+                                <span class="diff-badge diff-{{ q.difficulty }}">{{ q.difficulty|title }}</span>
+                                <span>{{ q.marks }} pts</span>
+                                {% for tag in q.get_tag_list %}
+                                <span class="tag-chip">{{ tag }}</span>
+                                {% endfor %}
+                                <a href="{% url 'edit_question' q.uid %}" class="btn btn-ghost btn-sm" style="padding:2px 6px; margin-left: auto;">
+                                    <i data-lucide="edit-3" style="width:14px;height:14px;color:var(--text-muted);"></i>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Student Submissions Results Table -->
+                <div class="results-section">
+                    <h3>
+                        <i data-lucide="users" style="width:18px;height:18px;color:var(--primary);"></i>
+                        Student Submissions ({{ exam.student_attempts.count }})
+                    </h3>
+                    {% if exam.student_attempts.all %}
+                    <div class="results-table-wrapper">
+                        <table class="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Roll Number</th>
+                                    <th>Score</th>
+                                    <th>Percentage</th>
+                                    <th>Grade</th>
+                                    <th>Time</th>
+                                    <th>Submitted At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for attempt in exam.student_attempts.all %}
+                                <tr>
+                                    <td style="font-weight:600;">{{ attempt.roll_no }}</td>
+                                    <td>
+                                        <span class="badge-score">{{ attempt.score }} / {{ attempt.total_marks }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge-percentage">{{ attempt.percentage }}%</span>
+                                    </td>
+                                    <td>
+                                        <span class="grade-badge grade-{{ attempt.grade|lower }}">{{ attempt.grade
+                                            }}</span>
+                                    </td>
+                                    <td style="color:var(--text-muted);">
+                                        {% if attempt.time_taken_seconds > 0 %}
+                                        {{ attempt.time_taken_seconds }}s
+                                        {% else %}
+                                        -
+                                        {% endif %}
+                                    </td>
+                                    <td style="color:var(--text-muted);">{{ attempt.updated_at|date:"Y-m-d H:i" }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p style="color: var(--text-muted); font-size: 0.95rem; font-style: italic; margin-top: 8px;">
+                        No student submissions for this exam yet.
+                    </p>
+                    {% endif %}
+                </div>
+            </article>
+            {% empty %}
+            <div class="empty-state">
+                <i data-lucide="file-plus"></i>
+                <h2>No exams yet</h2>
+                <p>Create your first exam to generate a student access key.</p>
+            </div>
+            {% endfor %}
+        </section>
+    </div>
+</main>
+
+<style>
+    /* Analytics Summary Cards */
+    .stat-cards-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 28px
+    }
+
+    .mini-stat-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 18px 20px;
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition)
+    }
+
+    .mini-stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md)
+    }
+
+    .mini-stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0
+    }
+
+    .mini-stat-num {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--dark)
+    }
+
+    .mini-stat-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 2px
+    }
+
+    /* Feature Toggles */
+    .feature-toggles {
+        margin: 20px 0;
+        padding: 18px;
+        background: var(--light);
+        border-radius: 12px;
+        border: 1px solid var(--border)
+    }
+
+    .feature-toggles h3 {
+        font-size: 1rem;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px
+    }
+
+    .toggle-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px
+    }
+
+    .toggle-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 12px 14px;
+        background: #fff;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition: var(--transition)
+    }
+
+    .toggle-item:hover {
+        border-color: var(--primary);
+        box-shadow: var(--shadow-sm)
+    }
+
+    .toggle-item input[type="checkbox"] {
+        accent-color: var(--primary);
+        width: 18px;
+        height: 18px;
+        float: right
+    }
+
+    .toggle-label-text {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+        font-size: 0.92rem
+    }
+
+    .toggle-desc {
+        font-size: 0.8rem;
+        color: var(--text-muted)
+    }
+
+    /* Feature Badges on exam cards */
+    .feature-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px
+    }
+
+    .fbadge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600
+    }
+
+    .fbadge-purple {
+        background: rgba(139, 92, 246, 0.1);
+        color: #8b5cf6
+    }
+
+    .fbadge-red {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444
+    }
+
+    .fbadge-amber {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b
+    }
+
+    .fbadge-blue {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6
+    }
+
+    .fbadge-green {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981
+    }
+
+    /* Exam action buttons */
+    .exam-actions-row {
+        display: flex;
+        gap: 8px;
+        margin: 12px 0;
+        flex-wrap: wrap
+    }
+
+    .btn-sm {
+        padding: 6px 14px;
+        font-size: 0.85rem
+    }
+
+    /* Question Bank Section */
+    .question-bank-section {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border)
+    }
+
+    .question-bank-section h3 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px
+    }
+
+    .question-bank-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px
+    }
+
+    .qb-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 14px;
+        background: var(--light);
+        border-radius: 8px;
+        border: 1px solid var(--border)
+    }
+
+    .qb-text {
+        font-size: 0.92rem;
+        flex: 1
+    }
+
+    .qb-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        flex-shrink: 0
+    }
+
+    .diff-badge {
+        padding: 2px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700
+    }
+
+    .diff-easy {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981
+    }
+
+    .diff-medium {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b
+    }
+
+    .diff-hard {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444
+    }
+
+    .tag-chip {
+        background: rgba(99, 102, 241, 0.08);
+        color: #6366f1;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.72rem
+    }
+
+    /* Grade badges */
+    .grade-badge {
+        padding: 2px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700
+    }
+
+    .grade-a\+,
+    .grade-a {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981
+    }
+
+    .grade-b {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6
+    }
+
+    .grade-c {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b
+    }
+
+    .grade-d {
+        background: rgba(249, 115, 22, 0.1);
+        color: #f97316
+    }
+
+    .grade-f {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444
+    }
+
+    @media(max-width:640px) {
+        .stat-cards-row {
+            grid-template-columns: 1fr 1fr
+        }
+
+        .toggle-grid {
+            grid-template-columns: 1fr
+        }
+
+        .qb-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px
+        }
+
+        .exam-actions-row {
+            flex-direction: column
+        }
+    }
+</style>
+{% endblock %}

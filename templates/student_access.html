@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="access-page">
+    <div class="access-panel animate-on-scroll">
+        <div class="auth-header">
+            <div class="auth-icon" style="--accent: #10b981;">
+                <i data-lucide="key-round"></i>
+            </div>
+            <h2>Student Exam Access</h2>
+            <p>No login needed. Enter your exam key and roll number.</p>
+        </div>
+
+        <form class="auth-form" action="{% url 'student_exam_access' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exam_key">Exam Key</label>
+                <div class="input-wrapper">
+                    <i data-lucide="key-round" class="input-icon"></i>
+                    <input type="text" id="exam_key" name="exam_key" value="{{ exam_key }}" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="roll_no">Roll Number</label>
+                <div class="input-wrapper">
+                    <i data-lucide="badge-check" class="input-icon"></i>
+                    <input type="text" id="roll_no" name="roll_no" placeholder="Enter roll number" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
+                Start Exam
+                <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

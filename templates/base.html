@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Examnet — The modern, secure online examination platform trusted by 10,000+ institutions worldwide. Create, manage, and proctor exams effortlessly.">
+    <title>Examnet — Modern Online Exam Platform</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div id="loader">
+        <div class="loader-spinner"></div>
+    </div>
+    {% include 'include/header.html' %}
+    {% if messages %}
+    <div class="messages-container">
+        {% for message in messages %}
+        <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% block content %}
+    {% endblock %}
+    {% include 'include/footer.html' %}
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <!-- Scroll Animations -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                    menuToggle.classList.toggle('active');
+                });
+            }
+
+            const joinExamBtn = document.getElementById('join-exam-btn');
+            const examKeyInput = document.getElementById('exam-key-input');
+            const goToQuiz = () => {
+                const key = examKeyInput ? examKeyInput.value.trim() : '';
+                const url = key
+                    ? "{% url 'student_exam_access' %}?key=" + encodeURIComponent(key)
+                    : "{% url 'student_exam_access' %}";
+                window.location.href = url;
+            };
+
+            if (joinExamBtn) {
+                joinExamBtn.addEventListener('click', goToQuiz);
+            }
+
+            if (examKeyInput) {
+                examKeyInput.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        goToQuiz();
+                    }
+                });
+            }
+        });
+    </script>
+    <script>
+        window.addEventListener("load", function () {
+            const loader = document.getElementById("loader");
+
+            setTimeout(() => {
+                // Loader hide करें
+                if (loader) {
+                    loader.classList.add("hide");
+                }
+
+                // अब animations start करें
+                startAnimations();
+
+            }, 1000); // 1 second loader
+        });
+    </script>
+</body>
+
+</html>

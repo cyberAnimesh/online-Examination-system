@@ -1,0 +1,62 @@
+<header class="site-header" id="site-header">
+    <nav class="navbar">
+
+        <!-- Logo -->
+        <a href="{% url 'home' %}" class="logo">
+            <i data-lucide="graduation-cap" class="logo-icon"></i>
+            Examnet
+        </a>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">
+            <i data-lucide="menu"></i>
+        </button>
+
+        <!-- Navigation Links -->
+        <ul class="nav-menu" id="nav-menu">
+            <li><a href="/#features">Features</a></li>
+            <li><a href="/#how-it-works">How it Works</a></li>
+            <li><a href="/#pricing">Pricing</a></li>
+            <li><a href="/#testimonials">Testimonials</a></li>
+            <li class="mobile-only"><a href="{% url 'student_exam_access' %}">Student Exam</a></li>
+            {% if user.is_authenticated %}
+            <li class="mobile-only"><a href="{% url 'teacher_dashboard' %}">Teacher Dashboard</a></li>
+            <li class="mobile-only"><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+            <li class="mobile-only"><a href="{% url 'register' %}">Sign Up</a></li>
+            <li class="mobile-only"><a href="{% url 'login' %}">Login Teacher</a></li>
+            {% endif %}
+        </ul>
+
+        <!-- Student Exam Key -->
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <i data-lucide="key-round" class="search-icon"></i>
+                <input type="text" class="search-bar" placeholder="Enter Exam Key" id="exam-key-input">
+            </div>
+            <button class="join-btn" id="join-exam-btn">
+                <i data-lucide="log-in" style="width:16px;height:16px;"></i>
+                Join Exam
+            </button>
+        </div>
+
+        <!-- Right Side Buttons -->
+        <div class="nav-actions">
+            {% if user.is_authenticated %}
+            <span class="user-greeting">Hello, {{ user.first_name|default:user.username }}</span>
+            <a href="{% url 'teacher_dashboard' %}" class="signup-btn">Dashboard</a>
+            <a href="{% url 'logout' %}" class="signin-btn" id="logout-link">
+                <i data-lucide="log-out" style="width:16px;height:16px;"></i>
+                Logout
+            </a>
+            {% else %}
+            <a href="{% url 'register' %}" class="signup-btn" id="signup-link">Sign Up</a>
+            <a href="{% url 'login' %}" class="signin-btn" id="signin-link">
+                <i data-lucide="log-in" style="width:16px;height:16px;"></i>
+                Teacher Sign In
+            </a>
+            {% endif %}
+        </div>
+
+    </nav>
+</header>

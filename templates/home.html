@@ -1,0 +1,911 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- ============================================ -->
+<!--                HERO SECTION                  -->
+<!-- ============================================ -->
+<section class="hero" id="hero">
+    <div class="hero-bg-elements">
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+        <div class="hero-orb hero-orb-3"></div>
+        <div class="hero-grid-overlay"></div>
+    </div>
+
+    <div class="container hero-content">
+        <div class="hero-badge">
+            <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
+            <span id="heroBadgeText">Now with AI-Powered Proctoring</span>
+            <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+        </div>
+
+        <h1 class="hero-title animate-on-scroll">
+            The Smarter Way to
+            <span class="gradient-text">Create & Manage</span>
+            Online Exams
+        </h1>
+
+        <p class="hero-subtitle animate-on-scroll">
+            Build secure, scalable exams in minutes. AI-powered proctoring, real-time analytics,
+            and seamless LMS integrations — trusted by 10,000+ institutions worldwide.
+        </p>
+
+        <div class="hero-actions animate-on-scroll">
+            <a href="#" class="btn btn-primary btn-lg" id="hero-start-btn">
+                <i data-lucide="rocket" style="width:18px;height:18px;"></i>
+                Start Free Trial
+            </a>
+            <a href="#" class="btn btn-outline btn-lg" id="hero-demo-btn">
+                <i data-lucide="play-circle" style="width:18px;height:18px;"></i>
+                Watch Demo
+            </a>
+        </div>
+
+        <div class="hero-trust animate-on-scroll">
+            <div class="trust-avatars">
+                <div class="avatar" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">J</div>
+                <div class="avatar" style="background: linear-gradient(135deg, #ec4899, #f43f5e);">A</div>
+                <div class="avatar" style="background: linear-gradient(135deg, #14b8a6, #06b6d4);">M</div>
+                <div class="avatar" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">S</div>
+                <div class="avatar avatar-more">+2k</div>
+            </div>
+            <div class="trust-text">
+                <div class="trust-stars">
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                </div>
+                <span>Loved by 2,000+ educators</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Dashboard Preview -->
+    <div class="hero-preview animate-on-scroll">
+        <div class="preview-window">
+            <div class="preview-topbar">
+                <div class="preview-dots">
+                    <span class="dot dot-red"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                </div>
+                <div class="preview-url">
+                    <i data-lucide="lock" style="width:12px;height:12px;"></i>
+                    examnet.com/dashboard
+                </div>
+                <div class="preview-actions-bar">
+                    <i data-lucide="search" style="width:14px;height:14px;"></i>
+                </div>
+            </div>
+            <div class="preview-body">
+                <!-- Mini Dashboard UI -->
+                <div class="dash-sidebar">
+                    <div class="dash-sidebar-item active">
+                        <i data-lucide="layout-dashboard" style="width:16px;height:16px;"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="dash-sidebar-item">
+                        <i data-lucide="file-text" style="width:16px;height:16px;"></i>
+                        <span>My Exams</span>
+                    </div>
+                    <div class="dash-sidebar-item">
+                        <i data-lucide="users" style="width:16px;height:16px;"></i>
+                        <span>Students</span>
+                    </div>
+                    <div class="dash-sidebar-item">
+                        <i data-lucide="bar-chart-3" style="width:16px;height:16px;"></i>
+                        <span>Analytics</span>
+                    </div>
+                    <div class="dash-sidebar-item">
+                        <i data-lucide="settings" style="width:16px;height:16px;"></i>
+                        <span>Settings</span>
+                    </div>
+                </div>
+                <div class="dash-main">
+                    <div class="dash-header-row">
+                        <h3>Exam Dashboard</h3>
+                        <button class="dash-create-btn">
+                            <i data-lucide="plus" style="width:14px;height:14px;"></i>
+                            New Exam
+                        </button>
+                    </div>
+                    <div class="dash-stats-row">
+                        <div class="dash-stat-card">
+                            <div class="dash-stat-icon" style="background: rgba(99,102,241,0.12); color: #6366f1;">
+                                <i data-lucide="file-text" style="width:20px;height:20px;"></i>
+                            </div>
+                            <div>
+                                <div class="dash-stat-num">248</div>
+                                <div class="dash-stat-label">Total Exams</div>
+                            </div>
+                        </div>
+                        <div class="dash-stat-card">
+                            <div class="dash-stat-icon" style="background: rgba(16,185,129,0.12); color: #10b981;">
+                                <i data-lucide="users" style="width:20px;height:20px;"></i>
+                            </div>
+                            <div>
+                                <div class="dash-stat-num">12.4k</div>
+                                <div class="dash-stat-label">Students</div>
+                            </div>
+                        </div>
+                        <div class="dash-stat-card">
+                            <div class="dash-stat-icon" style="background: rgba(245,158,11,0.12); color: #f59e0b;">
+                                <i data-lucide="trending-up" style="width:20px;height:20px;"></i>
+                            </div>
+                            <div>
+                                <div class="dash-stat-num">94.2%</div>
+                                <div class="dash-stat-label">Pass Rate</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dash-chart-placeholder">
+                        <div class="chart-bars">
+                            <div class="chart-bar" style="height: 45%;"></div>
+                            <div class="chart-bar" style="height: 70%;"></div>
+                            <div class="chart-bar" style="height: 55%;"></div>
+                            <div class="chart-bar" style="height: 85%;"></div>
+                            <div class="chart-bar" style="height: 65%;"></div>
+                            <div class="chart-bar" style="height: 92%;"></div>
+                            <div class="chart-bar" style="height: 78%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--           TRUSTED BY / LOGOS SECTION          -->
+<!-- ============================================ -->
+<section class="logos-section">
+    <div class="container">
+        <p class="logos-label">Trusted by leading institutions worldwide</p>
+        <div class="logos-track">
+            <div class="logo-item"><i data-lucide="graduation-cap" style="width:28px;height:28px;"></i>
+                <span>Stanford</span>
+            </div>
+            <div class="logo-item"><i data-lucide="landmark" style="width:28px;height:28px;"></i> <span>MIT</span></div>
+            <div class="logo-item"><i data-lucide="book-open" style="width:28px;height:28px;"></i> <span>Oxford</span>
+            </div>
+            <div class="logo-item"><i data-lucide="award" style="width:28px;height:28px;"></i> <span>Cambridge</span>
+            </div>
+            <div class="logo-item"><i data-lucide="school" style="width:28px;height:28px;"></i> <span>Harvard</span>
+            </div>
+            <div class="logo-item"><i data-lucide="building-2" style="width:28px;height:28px;"></i> <span>Google</span>
+            </div>
+            <div class="logo-item"><i data-lucide="cpu" style="width:28px;height:28px;"></i> <span>Microsoft</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--              FEATURES SECTION                -->
+<!-- ============================================ -->
+<section class="features-section" id="features">
+    <div class="container">
+        <div class="section-header animate-on-scroll">
+            <span class="section-badge">
+                <i data-lucide="zap" style="width:14px;height:14px;"></i> Features
+            </span>
+            <h2 class="section-title">Everything You Need to <span class="gradient-text">Excel</span></h2>
+            <p class="section-subtitle">Powerful tools designed for modern education — from exam creation to AI-driven
+                insights.</p>
+        </div>
+
+        <div class="features-grid">
+            <!-- Feature 1 -->
+            <div class="feature-card animate-on-scroll" id="feature-ai-proctoring">
+                <div class="feature-icon-wrap" style="--accent: #6366f1;">
+                    <i data-lucide="eye"></i>
+                </div>
+                <h3>AI-Powered Proctoring</h3>
+                <p>Advanced facial recognition and behavior analysis ensures exam integrity with zero manual
+                    intervention.</p>
+                <a href="#" class="feature-link">
+                    Learn more <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                </a>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="feature-card animate-on-scroll" id="feature-question-bank">
+                <div class="feature-icon-wrap" style="--accent: #ec4899;">
+                    <i data-lucide="database"></i>
+                </div>
+                <h3>Smart Question Bank</h3>
+                <p>Organize thousands of questions with tags, difficulty levels, and auto-shuffle to create unique exam
+                    instances.</p>
+                <a href="#" class="feature-link">
+                    Learn more <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                </a>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="feature-card animate-on-scroll" id="feature-analytics">
+                <div class="feature-icon-wrap" style="--accent: #14b8a6;">
+                    <i data-lucide="bar-chart-3"></i>
+                </div>
+                <h3>Real-Time Analytics</h3>
+                <p>Track student performance, identify learning gaps, and export detailed reports with a single click.
+                </p>
+                <a href="#" class="feature-link">
+                    Learn more <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                </a>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="feature-card animate-on-scroll" id="feature-security">
+                <div class="feature-icon-wrap" style="--accent: #f59e0b;">
+                    <i data-lucide="shield-check"></i>
+                </div>
+                <h3>Enterprise Security</h3>
+                <p>SOC 2 compliant with end-to-end encryption, secure browser lockdown, and multi-factor authentication.
+                </p>
+                <a href="#" class="feature-link">
+                    Learn more <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                </a>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="feature-card animate-on-scroll" id="feature-integrations">
+                <div class="feature-icon-wrap" style="--accent: #8b5cf6;">
+                    <i data-lucide="plug"></i>
+                </div>
+                <h3>LMS Integrations</h3>
+                <p>Seamlessly connect with Canvas, Moodle, Blackboard, and 40+ learning management systems.</p>
+                <a href="#" class="feature-link">
+                    Learn more <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                </a>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="feature-card animate-on-scroll" id="feature-auto-grading">
+                <div class="feature-icon-wrap" style="--accent: #06b6d4;">
+                    <i data-lucide="check-circle"></i>
+                </div>
+                <h3>Auto-Grading</h3>
+                <p>Instantly grade MCQ, fill-in-the-blank, and even essay questions with our AI-powered grading engine.
+                </p>
+                <a href="#" class="feature-link">
+                    Learn more <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--           HOW IT WORKS SECTION               -->
+<!-- ============================================ -->
+<section class="how-it-works" id="how-it-works">
+    <div class="container">
+        <div class="section-header animate-on-scroll">
+            <span class="section-badge">
+                <i data-lucide="list-ordered" style="width:14px;height:14px;"></i> Process
+            </span>
+            <h2 class="section-title">Get Started in <span class="gradient-text">3 Easy Steps</span></h2>
+            <p class="section-subtitle">From sign-up to your first exam — it's effortless.</p>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card animate-on-scroll" id="step-1">
+                <div class="step-number">01</div>
+                <div class="step-icon-wrap">
+                    <i data-lucide="user-plus"></i>
+                </div>
+                <h3>Create Your Account</h3>
+                <p>Sign up in seconds with your institutional email. No credit card required for the free plan.</p>
+            </div>
+
+            <div class="step-connector">
+                <i data-lucide="chevrons-right" style="width:24px;height:24px;"></i>
+            </div>
+
+            <div class="step-card animate-on-scroll" id="step-2">
+                <div class="step-number">02</div>
+                <div class="step-icon-wrap">
+                    <i data-lucide="file-plus"></i>
+                </div>
+                <h3>Build Your Exam</h3>
+                <p>Use our drag-and-drop builder or import questions from Word, Excel, or your existing question bank.
+                </p>
+            </div>
+
+            <div class="step-connector">
+                <i data-lucide="chevrons-right" style="width:24px;height:24px;"></i>
+            </div>
+
+            <div class="step-card animate-on-scroll" id="step-3">
+                <div class="step-number">03</div>
+                <div class="step-icon-wrap">
+                    <i data-lucide="send"></i>
+                </div>
+                <h3>Launch & Monitor</h3>
+                <p>Share the exam key, monitor live sessions with AI proctoring, and get instant grading & reports.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--              STATS SECTION                   -->
+<!-- ============================================ -->
+<section class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item animate-on-scroll">
+                <div class="stat-icon"><i data-lucide="building-2"></i></div>
+                <div class="stat-number" data-target="10000">10,000+</div>
+                <div class="stat-label">Institutions</div>
+            </div>
+            <div class="stat-item animate-on-scroll">
+                <div class="stat-icon"><i data-lucide="users"></i></div>
+                <div class="stat-number" data-target="5000000">5M+</div>
+                <div class="stat-label">Exams Delivered</div>
+            </div>
+            <div class="stat-item animate-on-scroll">
+                <div class="stat-icon"><i data-lucide="globe"></i></div>
+                <div class="stat-number" data-target="120">120+</div>
+                <div class="stat-label">Countries</div>
+            </div>
+            <div class="stat-item animate-on-scroll">
+                <div class="stat-icon"><i data-lucide="clock"></i></div>
+                <div class="stat-number">99.9%</div>
+                <div class="stat-label">Uptime SLA</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--             PRICING SECTION                  -->
+<!-- ============================================ -->
+<section class="pricing-section" id="pricing">
+    <div class="container">
+        <div class="section-header animate-on-scroll">
+            <span class="section-badge">
+                <i data-lucide="credit-card" style="width:14px;height:14px;"></i> Pricing
+            </span>
+            <h2 class="section-title">Simple, Transparent <span class="gradient-text">Pricing</span></h2>
+            <p class="section-subtitle">No hidden fees. Cancel anytime. Start free.</p>
+        </div>
+
+        <div class="pricing-toggle animate-on-scroll">
+            <span class="toggle-label active" id="monthly-label">Monthly</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="pricing-toggle">
+                <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label" id="annual-label">Annual <span class="save-badge">Save 20%</span></span>
+        </div>
+
+        <div class="pricing-grid">
+            <!-- Free Plan -->
+            <div class="pricing-card animate-on-scroll" id="plan-free">
+                <div class="pricing-card-header">
+                    <div class="plan-icon" style="--accent: #6366f1;">
+                        <i data-lucide="gift"></i>
+                    </div>
+                    <h3>Free</h3>
+                    <p class="plan-desc">Perfect for individual teachers</p>
+                </div>
+                <div class="pricing-amount">
+                    <span class="price">$0</span>
+                    <span class="period">/month</span>
+                </div>
+                <ul class="pricing-features">
+                    <li><i data-lucide="check" class="check-icon"></i> Up to 30 students</li>
+                    <li><i data-lucide="check" class="check-icon"></i> 5 exams per month</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Basic question types</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Auto-grading</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Email support</li>
+                    <li class="disabled"><i data-lucide="x" class="x-icon"></i> AI Proctoring</li>
+                    <li class="disabled"><i data-lucide="x" class="x-icon"></i> LMS Integration</li>
+                </ul>
+                <a href="#" class="btn btn-outline btn-block" id="plan-free-btn">Get Started Free</a>
+            </div>
+
+            <!-- Pro Plan (Popular) -->
+            <div class="pricing-card pricing-popular animate-on-scroll" id="plan-pro">
+                <div class="popular-badge">
+                    <i data-lucide="flame" style="width:14px;height:14px;"></i> Most Popular
+                </div>
+                <div class="pricing-card-header">
+                    <div class="plan-icon" style="--accent: #8b5cf6;">
+                        <i data-lucide="zap"></i>
+                    </div>
+                    <h3>Pro</h3>
+                    <p class="plan-desc">For departments & small teams</p>
+                </div>
+                <div class="pricing-amount">
+                    <span class="price">$29</span>
+                    <span class="period">/month</span>
+                </div>
+                <ul class="pricing-features">
+                    <li><i data-lucide="check" class="check-icon"></i> Up to 500 students</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Unlimited exams</li>
+                    <li><i data-lucide="check" class="check-icon"></i> All question types</li>
+                    <li><i data-lucide="check" class="check-icon"></i> AI auto-grading</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Basic AI Proctoring</li>
+                    <li><i data-lucide="check" class="check-icon"></i> LMS Integration</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Priority support</li>
+                </ul>
+                <a href="#" class="btn btn-primary btn-block" id="plan-pro-btn">Start 14-Day Trial</a>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="pricing-card animate-on-scroll" id="plan-enterprise">
+                <div class="pricing-card-header">
+                    <div class="plan-icon" style="--accent: #14b8a6;">
+                        <i data-lucide="building-2"></i>
+                    </div>
+                    <h3>Enterprise</h3>
+                    <p class="plan-desc">For universities & organizations</p>
+                </div>
+                <div class="pricing-amount">
+                    <span class="price">$99</span>
+                    <span class="period">/month</span>
+                </div>
+                <ul class="pricing-features">
+                    <li><i data-lucide="check" class="check-icon"></i> Unlimited students</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Unlimited everything</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Advanced AI Proctoring</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Custom branding</li>
+                    <li><i data-lucide="check" class="check-icon"></i> SSO / SAML</li>
+                    <li><i data-lucide="check" class="check-icon"></i> API access</li>
+                    <li><i data-lucide="check" class="check-icon"></i> Dedicated account manager</li>
+                </ul>
+                <a href="#" class="btn btn-outline btn-block" id="plan-enterprise-btn">Contact Sales</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--           TESTIMONIALS SECTION               -->
+<!-- ============================================ -->
+<section class="testimonials-section" id="testimonials">
+    <div class="container">
+        <div class="section-header animate-on-scroll">
+            <span class="section-badge">
+                <i data-lucide="message-square" style="width:14px;height:14px;"></i> Testimonials
+            </span>
+            <h2 class="section-title">Loved by <span class="gradient-text">Educators</span></h2>
+            <p class="section-subtitle">See what our users have to say about Examnet.</p>
+        </div>
+
+        <div class="testimonials-grid">
+            <div class="testimonial-card animate-on-scroll" id="testimonial-1">
+                <div class="testimonial-stars">
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                </div>
+                <p class="testimonial-text">"Examnet has transformed how we conduct assessments. The AI proctoring alone
+                    saved us hundreds of hours per semester. Absolutely game-changing."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
+                        <span>DK</span>
+                    </div>
+                    <div class="author-info">
+                        <strong>Dr. Karen Mitchell</strong>
+                        <span>Head of CS, Stanford University</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card animate-on-scroll" id="testimonial-2">
+                <div class="testimonial-stars">
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                </div>
+                <p class="testimonial-text">"We migrated 50,000 students in a week. The LMS integration with Moodle was
+                    flawless. Support team was incredibly responsive throughout."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background: linear-gradient(135deg, #ec4899, #f43f5e);">
+                        <span>RJ</span>
+                    </div>
+                    <div class="author-info">
+                        <strong>Prof. Raj Patel</strong>
+                        <span>Dean of Engineering, IIT Delhi</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card animate-on-scroll" id="testimonial-3">
+                <div class="testimonial-stars">
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                    <i data-lucide="star" class="star-filled"></i>
+                </div>
+                <p class="testimonial-text">"The analytics dashboard gives us insights we never had before. We can now
+                    identify struggling students early and provide targeted support."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background: linear-gradient(135deg, #14b8a6, #06b6d4);">
+                        <span>ES</span>
+                    </div>
+                    <div class="author-info">
+                        <strong>Emily Sanders</strong>
+                        <span>VP of Education, Coursera</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--               FAQ SECTION                    -->
+<!-- ============================================ -->
+<section class="faq-section" id="faq">
+    <div class="container">
+        <div class="section-header animate-on-scroll">
+            <span class="section-badge">
+                <i data-lucide="help-circle" style="width:14px;height:14px;"></i> FAQ
+            </span>
+            <h2 class="section-title">Frequently Asked <span class="gradient-text">Questions</span></h2>
+        </div>
+
+        <div class="faq-grid">
+            <div class="faq-item animate-on-scroll">
+                <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                    <span>How secure is Examnet?</span>
+                    <i data-lucide="chevron-down" class="faq-chevron"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Examnet is SOC 2 Type II certified with end-to-end encryption, secure browser lockdown,
+                        multi-factor authentication, and continuous AI-powered monitoring to prevent cheating.</p>
+                </div>
+            </div>
+
+            <div class="faq-item animate-on-scroll">
+                <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                    <span>Can I import my existing question bank?</span>
+                    <i data-lucide="chevron-down" class="faq-chevron"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes! You can import questions from Word (.docx), Excel (.xlsx), CSV, QTI, and most major LMS
+                        export formats. Our smart parser auto-detects question types.</p>
+                </div>
+            </div>
+
+            <div class="faq-item animate-on-scroll">
+                <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                    <span>Does Examnet integrate with my LMS?</span>
+                    <i data-lucide="chevron-down" class="faq-chevron"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>We integrate with 40+ LMS platforms including Canvas, Moodle, Blackboard, Google Classroom, and
+                        Microsoft Teams. Setup takes less than 5 minutes.</p>
+                </div>
+            </div>
+
+            <div class="faq-item animate-on-scroll">
+                <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                    <span>Is there a free plan available?</span>
+                    <i data-lucide="chevron-down" class="faq-chevron"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Absolutely! Our Free plan supports up to 30 students and 5 exams per month with auto-grading
+                        included. No credit card required to get started.</p>
+                </div>
+            </div>
+
+            <div class="faq-item animate-on-scroll">
+                <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                    <span>What types of questions are supported?</span>
+                    <i data-lucide="chevron-down" class="faq-chevron"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>We support MCQ, multi-select, true/false, fill-in-the-blank, short answer, essay, matching,
+                        ordering, coding questions, and file upload — with more being added regularly.</p>
+                </div>
+            </div>
+
+            <div class="faq-item animate-on-scroll">
+                <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                    <span>Can students take exams on mobile devices?</span>
+                    <i data-lucide="chevron-down" class="faq-chevron"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes, Examnet is fully responsive and works on all modern browsers and devices. We also offer
+                        dedicated iOS and Android apps with offline mode support.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--              CTA SECTION                     -->
+<!-- ============================================ -->
+<section class="cta-section">
+    <div class="cta-bg-elements">
+        <div class="cta-orb cta-orb-1"></div>
+        <div class="cta-orb cta-orb-2"></div>
+    </div>
+    <div class="container cta-content animate-on-scroll">
+        <h2>Ready to Transform Your Assessments?</h2>
+        <p>Join 10,000+ institutions already using Examnet. Start your free trial today — no credit card required.</p>
+        <div class="cta-actions">
+            <a href="#" class="btn btn-white btn-lg" id="cta-start-btn">
+                <i data-lucide="rocket" style="width:18px;height:18px;"></i>
+                Start Free Trial
+            </a>
+            <a href="#" class="btn btn-ghost btn-lg" id="cta-talk-btn">
+                <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
+                Talk to Sales
+            </a>
+        </div>
+    </div>
+    <!-- ============================================ -->
+    <!--              VIDEO MODAL                     -->
+    <!-- ============================================ -->
+    <div id="demoVideoModal" class="video-modal">
+        <div class="video-modal-content">
+            <span class="close-video-modal" id="closeVideoModal">&times;</span>
+            <div class="video-container">
+                <!-- Using a placeholder video, you can replace the src with your own video link -->
+                <iframe width="560" height="315"
+                    src="https://www.youtube.com/embed/ScMzIvxBSi4?si=rXbYV_38e_yUq1Gg&autoplay=1" title="Demo Video"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Video Modal Styles */
+        .video-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            /* Ensure it is on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .video-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            background: #000;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .video-modal.show .video-modal-content {
+            transform: scale(1);
+        }
+
+        .close-video-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: #fff;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-video-modal:hover {
+            color: #cbd5e1;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById("demoVideoModal");
+            const btn = document.getElementById("hero-demo-btn");
+            const span = document.getElementById("closeVideoModal");
+            const iframe = modal.querySelector("iframe");
+            const iframeSrc = iframe.src;
+
+            if (btn && modal && span) {
+                // Open Modal
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    modal.classList.add("show");
+                    // Set src to autoplay when opened
+                    iframe.src = iframeSrc;
+                });
+
+                // Close Modal via close button
+                span.addEventListener('click', function () {
+                    closeModal();
+                });
+
+                // Close Modal by clicking outside
+                window.addEventListener('click', function (event) {
+                    if (event.target == modal) {
+                        closeModal();
+                    }
+                });
+
+                function closeModal() {
+                    modal.classList.remove("show");
+                    // Stop video playing by clearing src
+                    iframe.src = "";
+                }
+            }
+        });
+    </script>
+    <script>
+        function startAnimations() {
+
+            // Sidebar Active
+            const sidebarItems = document.querySelectorAll('.dash-sidebar-item');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Dashboard Counters
+            document.querySelectorAll(".dash-stat-num").forEach(counter => {
+                const targetText = counter.innerText.trim();
+
+                let target = parseFloat(targetText.replace(/[^0-9.]/g, ""));
+                const hasK = targetText.toLowerCase().includes("k");
+                const hasPercent = targetText.includes("%");
+
+                if (hasK) target *= 1000;
+
+                let count = 0;
+                const duration = 1500;
+                const stepTime = 20;
+                const increment = target / (duration / stepTime);
+
+                function updateCounter() {
+                    count += increment;
+                    if (count >= target) count = target;
+
+                    let displayValue = Math.floor(count);
+
+                    if (hasK) {
+                        counter.innerText = (displayValue / 1000).toFixed(1) + "k";
+                    } else if (hasPercent) {
+                        counter.innerText = count.toFixed(1) + "%";
+                    } else {
+                        counter.innerText = displayValue;
+                    }
+
+                    if (count < target) {
+                        setTimeout(updateCounter, stepTime);
+                    }
+                }
+
+                counter.innerText = "0";
+                updateCounter();
+            });
+
+            // Stats Counter
+            document.querySelectorAll(".stat-number").forEach(counter => {
+                const target = parseFloat(counter.dataset.target);
+                if (isNaN(target)) return;
+
+                const isMillion = target >= 1000000;
+                const isPercent = counter.textContent.includes("%");
+
+                let current = 0;
+                const step = target / 100;
+
+                function count() {
+                    current += step;
+                    if (current >= target) current = target;
+
+                    if (isPercent) {
+                        counter.textContent = current.toFixed(1) + "%";
+                    } else if (isMillion) {
+                        counter.textContent = (current / 1000000).toFixed(0) + "M+";
+                    } else if (target >= 1000) {
+                        counter.textContent = Math.floor(current).toLocaleString() + "+";
+                    } else {
+                        counter.textContent = Math.floor(current) + "+";
+                    }
+
+                    if (current < target) {
+                        requestAnimationFrame(count);
+                    }
+                }
+
+                counter.textContent = isPercent ? "0%" : "0";
+                count();
+            });
+
+            // Chart Bar Animation
+            document.querySelectorAll(".chart-bar").forEach((bar, index) => {
+                const targetHeight = bar.getAttribute("style").match(/height:\s*([^;]+)/)[1];
+
+                bar.style.height = "0%";
+
+                setTimeout(() => {
+                    bar.style.height = targetHeight;
+                }, index * 150);
+            });
+
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const badgeText = document.getElementById("heroBadgeText");
+
+            const messages = [
+                "Now with AI-Powered Proctoring",
+                "Auto-Grading Enabled",
+                "Enterprise-Grade Security",
+                "Real-Time Analytics Dashboard",
+                "LMS Integrations",
+                "Smart AI Question Bank"
+            ];
+
+            let index = 0;
+
+            badgeText.classList.add("animate-in");
+
+            setInterval(() => {
+                // Fade Out + Slide Up
+                badgeText.classList.remove("animate-in");
+                // badgeText.classList.add("animate-out");
+
+                setTimeout(() => {
+                    // Text Change
+                    index = (index + 1) % messages.length;
+                    badgeText.textContent = messages[index];
+
+                    // Fade In + Slide Down
+                    badgeText.classList.remove("animate-out");
+                    // badgeText.classList.add("animate-in");
+                }, 400);
+
+            }, 3000);
+        });
+    </script>
+    {% endblock %}

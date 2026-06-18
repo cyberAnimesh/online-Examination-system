@@ -1,0 +1,527 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="teacher-page">
+    <div class="container">
+        <div class="teacher-header">
+            <div>
+                <span class="section-badge">
+                    <i data-lucide="bar-chart-3" style="width:14px;height:14px;"></i> Analytics
+                </span>
+                <h1>{{ exam.name }}</h1>
+                <p>Real-time performance analytics and proctoring report</p>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+                <a href="{% url 'export_results_csv' exam.uid %}" class="btn btn-outline">
+                    <i data-lucide="download" style="width:16px;height:16px;"></i> Export CSV
+                </a>
+                <a href="{% url 'teacher_dashboard' %}" class="btn btn-primary">
+                    <i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Back
+                </a>
+            </div>
+        </div>
+
+        <!-- ── Analytics Overview Cards ── -->
+        <div class="analytics-cards-row">
+            <div class="a-card">
+                <div class="a-icon" style="background:rgba(99,102,241,0.1);color:#6366f1;">
+                    <i data-lucide="users" style="width:24px;height:24px;"></i>
+                </div>
+                <div class="a-num">{{ attempts.count }}</div>
+                <div class="a-label">Total Attempts</div>
+            </div>
+            <div class="a-card">
+                <div class="a-icon" style="background:rgba(16,185,129,0.1);color:#10b981;">
+                    <i data-lucide="trophy" style="width:24px;height:24px;"></i>
+                </div>
+                <div class="a-num">{{ exam.avg_score }}</div>
+                <div class="a-label">Avg Score</div>
+            </div>
+            <div class="a-card">
+                <div class="a-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b;">
+                    <i data-lucide="trending-up" style="width:24px;height:24px;"></i>
+                </div>
+                <div class="a-num">{{ exam.pass_rate }}%</div>
+                <div class="a-label">Pass Rate</div>
+            </div>
+            <div class="a-card">
+                <div class="a-icon" style="background:rgba(239,68,68,0.1);color:#ef4444;">
+                    <i data-lucide="alert-triangle" style="width:24px;height:24px;"></i>
+                </div>
+                <div class="a-num">{{ proctoring_events.count }}</div>
+                <div class="a-label">Violations</div>
+            </div>
+        </div>
+
+        <!-- ── Score Distribution Chart ── -->
+        <section class="analytics-panel">
+            <h2>
+                <i data-lucide="bar-chart-3" style="width:20px;height:20px;color:var(--primary);"></i>
+                Score Distribution
+            </h2>
+            <div class="chart-container" id="score-chart"></div>
+        </section>
+
+        <!-- ── Feature badges for this exam ── -->
+        <section class="analytics-panel">
+            <h2>
+                <i data-lucide="settings" style="width:20px;height:20px;color:var(--primary);"></i>
+                Exam Configuration
+            </h2>
+            <div class="config-grid">
+                <div class="config-item">
+                    <span class="config-key">AI Proctoring</span>
+                    <span class="config-val {{ exam.proctoring_enabled|yesno:'active,inactive' }}">
+                        {{ exam.proctoring_enabled|yesno:'Enabled,Disabled' }}
+                    </span>
+                </div>
+                <div class="config-item">
+                    <span class="config-key">Browser Lockdown</span>
+                    <span class="config-val {{ exam.browser_lockdown|yesno:'active,inactive' }}">
+                        {{ exam.browser_lockdown|yesno:'Enabled,Disabled' }}
+                    </span>
+                </div>
+                <div class="config-item">
+                    <span class="config-key">Shuffle Questions</span>
+                    <span class="config-val {{ exam.shuffle_questions|yesno:'active,inactive' }}">
+                        {{ exam.shuffle_questions|yesno:'Yes,No' }}
+                    </span>
+                </div>
+                <div class="config-item">
+                    <span class="config-key">Time Limit</span>
+                    <span class="config-val">{{ exam.time_limit_minutes|default:'No limit' }} min</span>
+                </div>
+                <div class="config-item">
+                    <span class="config-key">LMS Platform</span>
+                    <span class="config-val">{{ exam.get_lms_platform_display }}</span>
+                </div>
+                <div class="config-item">
+                    <span class="config-key">Total Questions</span>
+                    <span class="config-val">{{ questions.count }}</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Question Bank Analysis ── -->
+        <section class="analytics-panel">
+            <h2>
+                <i data-lucide="database" style="width:20px;height:20px;color:#ec4899;"></i>
+                Question Bank Analysis
+            </h2>
+            <div class="results-table-wrapper">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Question</th>
+                            <th>Difficulty</th>
+                            <th>Marks</th>
+                            <th>Tags</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for qs in question_stats %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ qs.question|truncatewords:15 }}</td>
+                            <td>
+                                <span class="diff-badge diff-{{ qs.difficulty }}">{{ qs.difficulty|title }}</span>
+                            </td>
+                            <td>{{ qs.marks }}</td>
+                            <td>
+                                {% for tag in qs.tags %}
+                                <span class="tag-chip">{{ tag }}</span>
+                                {% empty %}
+                                <span style="color:var(--text-muted);">-</span>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" style="text-align:center;color:var(--text-muted);">No questions yet</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ── Student Results ── -->
+        <section class="analytics-panel">
+            <h2>
+                <i data-lucide="users" style="width:20px;height:20px;color:var(--primary);"></i>
+                Student Results
+            </h2>
+            <div class="results-table-wrapper">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Roll No</th>
+                            <th>Score</th>
+                            <th>Percentage</th>
+                            <th>Grade</th>
+                            <th>Time Taken</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for attempt in attempts %}
+                        <tr>
+                            <td style="font-weight:600;">{{ attempt.roll_no }}</td>
+                            <td><span class="badge-score">{{ attempt.score }}/{{ attempt.total_marks }}</span></td>
+                            <td><span class="badge-percentage">{{ attempt.percentage }}%</span></td>
+                            <td><span class="grade-badge grade-{{ attempt.grade|lower }}">{{ attempt.grade }}</span>
+                            </td>
+                            <td>
+                                {% if attempt.time_taken_seconds > 0 %}
+                                {{ attempt.time_taken_seconds }}s
+                                {% else %}
+                                -
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if attempt.is_submitted %}
+                                <span style="color:#10b981;font-weight:600;">Submitted</span>
+                                {% else %}
+                                <span style="color:#f59e0b;">In Progress</span>
+                                {% endif %}
+                            </td>
+                            <td style="color:var(--text-muted);">{{ attempt.updated_at|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" style="text-align:center;color:var(--text-muted);">No attempts yet</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ── Proctoring Events Log ── -->
+        {% if exam.proctoring_enabled %}
+        <section class="analytics-panel">
+            <h2>
+                <i data-lucide="eye" style="width:20px;height:20px;color:#ef4444;"></i>
+                AI Proctoring Events
+            </h2>
+
+            {% if proctoring_summary %}
+            <div class="proctor-summary">
+                {% for item in proctoring_summary %}
+                <div class="proctor-sum-item">
+                    <span class="proctor-type">{{ item.event_type }}</span>
+                    <span class="proctor-count">{{ item.count }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="results-table-wrapper" style="margin-top:12px;">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Roll No</th>
+                            <th>Event</th>
+                            <th>Detail</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in proctoring_events %}
+                        <tr>
+                            <td style="font-weight:600;">{{ event.roll_no }}</td>
+                            <td>
+                                <span class="fbadge fbadge-red">{{ event.get_event_type_display }}</span>
+                            </td>
+                            <td style="color:var(--text-muted);max-width:300px;">{{ event.detail|truncatewords:20 }}
+                            </td>
+                            <td style="color:var(--text-muted);">{{ event.timestamp|date:"H:i:s" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" style="text-align:center;color:var(--text-muted);">No proctoring events
+                                recorded</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        {% endif %}
+    </div>
+</main>
+
+<style>
+    .analytics-cards-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+        margin-bottom: 28px
+    }
+
+    .a-card {
+        padding: 22px;
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        text-align: center;
+        transition: var(--transition)
+    }
+
+    .a-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md)
+    }
+
+    .a-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 12px
+    }
+
+    .a-num {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: var(--dark)
+    }
+
+    .a-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 4px
+    }
+
+    .analytics-panel {
+        padding: 24px;
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 20px
+    }
+
+    .analytics-panel h2 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1.15rem;
+        margin-bottom: 16px
+    }
+
+    .chart-container {
+        height: 220px;
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+        padding: 16px;
+        background: var(--light);
+        border-radius: 10px
+    }
+
+    .chart-bar-wrap {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px
+    }
+
+    .chart-bar-fill {
+        width: 100%;
+        border-radius: 6px 6px 0 0;
+        background: var(--gradient-primary);
+        min-height: 4px;
+        transition: height 1s ease
+    }
+
+    .chart-bar-label {
+        font-size: 0.75rem;
+        color: var(--text-muted)
+    }
+
+    .chart-bar-val {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--dark)
+    }
+
+    .config-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px
+    }
+
+    .config-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 14px;
+        background: var(--light);
+        border-radius: 8px
+    }
+
+    .config-key {
+        font-size: 0.9rem;
+        color: var(--text-muted)
+    }
+
+    .config-val {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--dark)
+    }
+
+    .config-val.active {
+        color: #10b981
+    }
+
+    .config-val.inactive {
+        color: #ef4444
+    }
+
+    .proctor-summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px
+    }
+
+    .proctor-sum-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        background: rgba(239, 68, 68, 0.05);
+        border: 1px solid rgba(239, 68, 68, 0.15);
+        border-radius: 8px
+    }
+
+    .proctor-type {
+        font-size: 0.85rem;
+        color: #ef4444;
+        font-weight: 600
+    }
+
+    .proctor-count {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #ef4444
+    }
+
+    /* Reuse from dashboard */
+    .diff-badge {
+        padding: 2px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700
+    }
+
+    .diff-easy {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981
+    }
+
+    .diff-medium {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b
+    }
+
+    .diff-hard {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444
+    }
+
+    .tag-chip {
+        background: rgba(99, 102, 241, 0.08);
+        color: #6366f1;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.72rem
+    }
+
+    .fbadge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600
+    }
+
+    .fbadge-red {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444
+    }
+
+    .grade-badge {
+        padding: 2px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700
+    }
+
+    .grade-a\+,
+    .grade-a {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981
+    }
+
+    .grade-b {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6
+    }
+
+    .grade-c {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b
+    }
+
+    .grade-d {
+        background: rgba(249, 115, 22, 0.1);
+        color: #f97316
+    }
+
+    .grade-f {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444
+    }
+
+    @media(max-width:640px) {
+        .analytics-cards-row {
+            grid-template-columns: 1fr 1fr
+        }
+
+        .config-grid {
+            grid-template-columns: 1fr
+        }
+    }
+</style>
+
+<script>
+    // Render Score Distribution Chart
+    (function () {
+        const scoreData = {{ score_ranges| safe
+    }};
+    const chart = document.getElementById('score-chart');
+    if (!chart) return;
+    const max = Math.max(...Object.values(scoreData), 1);
+
+    for (const [range, count] of Object.entries(scoreData)) {
+        const wrap = document.createElement('div');
+        wrap.className = 'chart-bar-wrap';
+        const pct = (count / max) * 180;
+        wrap.innerHTML = `
+            <div class="chart-bar-val">${count}</div>
+            <div class="chart-bar-fill" style="height:${Math.max(pct, 4)}px;"></div>
+            <div class="chart-bar-label">${range}%</div>
+        `;
+        chart.appendChild(wrap);
+    }
+});
+</script>
+{% endblock %}
